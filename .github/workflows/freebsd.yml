@@ -14,7 +14,7 @@ jobs:
           perl Build.PL
           ./Build test
           ./Build dist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist-for-freebsd-install
           path: '*.tar.gz'
