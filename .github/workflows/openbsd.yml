@@ -14,7 +14,7 @@ jobs:
           perl Build.PL
           ./Build test
           ./Build dist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist-for-openbsd-install
           path: '*.tar.gz'
@@ -23,11 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist-for-openbsd-install
       - name: Install on OpenBSD
-        uses: cross-platform-actions/action@v0.21.1
+        uses: cross-platform-actions/action@v0.23.0
         with:
           operating_system: openbsd
           version: 7.4
