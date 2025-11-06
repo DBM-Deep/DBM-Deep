@@ -1,6 +1,6 @@
 =head1 NAME
 
-DBM::Deep - A pure perl multi-level hash/array DBM that supports transactions
+DBM::Deep - A pure Perl multi-level hash/array DBM that supports transactions
 
 =head1 SYNOPSIS
 
@@ -35,11 +35,11 @@ DBM::Deep - A pure perl multi-level hash/array DBM that supports transactions
 
 =head1 DESCRIPTION
 
-A unique flat-file database module, written in pure perl. True multi-level
+A unique flat-file database module, written in pure Perl. True multi-level
 hash/array support (unlike MLDBM, which is faked), hybrid OO / tie()
 interface, cross-platform FTPable files, ACID transactions, and is quite fast.
 Can handle millions of keys and unlimited levels without significant
-slow-down. Written from the ground-up in pure perl -- this is NOT a wrapper
+slow-down. Written from the ground-up in pure Perl -- this is NOT a wrapper
 around a C-based DBM. Out-of-the-box compatibility with Unix, Mac OS X and
 Windows.
 
@@ -296,19 +296,21 @@ more than 64 isn't recommended.
 
 =item * data_sector_size
 
-This is the size in bytes of a given data sector. Data sectors will chain, so
-a value of any size can be stored. However, chaining is expensive in terms of
-time. Setting this value to something close to the expected common length of
-your scalars will improve your performance. If it is too small, your file will
-have a lot of chaining. If it is too large, your file will have a lot of dead
-space in it.
+This is the size in bytes of a given data sector. The default for this is 64
+bytes. The minimum value is 32 and the maximum is 256 bytes.
 
-The default for this is 64 bytes. The minimum value is 32 and the maximum is
-256 bytes.
+Keys (or array indexes) and values are each stored in their own sectors, so
+each database entry consumes at least 2 * data_sector_size bytes.
 
-B<Note:> There are between 6 and 10 bytes taken up in each data sector for
+Data sectors will chain, so a value of any size can be stored. However, chaining
+is expensive in terms of time. Setting this value to something close to the
+expected common length of your scalars will improve your performance. If it is
+too small, your file will have a lot of chaining. If it is too large, your file
+will have a lot of dead space in it.
+
+B<Note:> There are between 6 and 12 bytes taken up in each data sector for
 bookkeeping. (It's 4 + the number of bytes in your L</pack_size>.) This is
-included within the data_sector_size, thus the effective value is 6-10 bytes
+included within the data_sector_size, thus the usable space is 6-12 bytes
 less than what you specified.
 
 B<Another note:> If your strings contain any characters beyond the byte
@@ -326,6 +328,14 @@ are:
 
 This uses 2-byte offsets, allowing for a maximum file size of 65 KB.
 
+With a data_sector_size of 32, this will hold a maximum of 236 entries.
+
+With a data_sector_size of 64, this will hold a maximum of 178 entries.
+
+With a data_sector_size of 128, this will hold a maximum of 122 entries.
+
+With a data_sector_size of 256, this will hold a maximum of 79 entries.
+
 =item * medium (default)
 
 This uses 4-byte offsets, allowing for a maximum file size of 4 GB.
@@ -335,9 +345,9 @@ This uses 4-byte offsets, allowing for a maximum file size of 4 GB.
 This uses 8-byte offsets, allowing for a maximum file size of 16 XB
 (exabytes). This can only be enabled if your Perl is compiled for 64-bit.
 
-=back
-
 See L</LARGEFILE SUPPORT> for more information.
+
+=back
 
 =item * external_refs
 
