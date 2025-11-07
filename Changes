@@ -1,5 +1,9 @@
 Revision history for DBM::Deep (ordered by revision number).
 
+XXXXXX    XXXXXXXXXX
+
+- document the sizes of some internal structures better
+
 2.0019    2023-11-12
 
 - improvement so that when you try to put too much data in you get a
