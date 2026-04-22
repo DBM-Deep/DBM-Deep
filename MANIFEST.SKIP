@@ -25,3 +25,4 @@ cover_db
 TODO
 README.md
 etc/sql_example.pl
+^workflow-templates
