@@ -19,7 +19,8 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
       - name: Test and build
         run: |
-          cpanm DBD::SQLite
+          cpanm DBD::SQLite Test::Pod Test::Pod::Coverage
+          perl -Mparent -e0 || cpanm parent
           cpanm --installdeps .
           (echo y;echo y;echo)|perl Build.PL
           ./Build test TEST_VERBOSE=1
